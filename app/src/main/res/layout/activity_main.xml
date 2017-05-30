@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     tools:context="com.guolifeng.android.heros_view.MainActivity">
 
-    <com.guolifeng.android.heros_view.MyView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"/>
+    <com.guolifeng.android.heros_view.MyTextView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="@android:string/selectTextMode"
+        />
 
 </LinearLayout>

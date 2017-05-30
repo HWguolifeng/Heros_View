@@ -58,4 +58,6 @@ public class MyView extends View
         return reasult;
 
     }
+
+
 }
