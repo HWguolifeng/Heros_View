@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Scroller;
 
 /**
  * Created by 郭利锋 on 2017/5/14 0014.
@@ -16,20 +17,28 @@ public class MyView extends View
     private static final String TAG = "MyView";
     private int lastX;
     private int lastY;
+    private Scroller mScroller;
+    private Context mContent;
 
     public MyView(Context context)
     {
         super(context);
+        mContent = context;
+        mScroller = new Scroller(mContent);
     }
 
     public MyView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        mContent = context;
+        mScroller = new Scroller(mContent);
     }
 
     public MyView(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+        mContent = context;
+        mScroller = new Scroller(mContent);
     }
 
     @Override
@@ -49,6 +58,9 @@ public class MyView extends View
         {
             case MotionEvent.ACTION_UP:
                 Log.i(TAG, "onTouchEvent: ACTION_UP");
+                View view = (View) getParent();
+                mScroller.startScroll(view.getScrollX(), view.getScrollY(), -view.getScrollX(), -view.getScrollY(),2000);
+                invalidate();
                 break;
             case MotionEvent.ACTION_DOWN:
                 Log.i(TAG, "onTouchEvent: ACTION_DOWN");
@@ -72,5 +84,16 @@ public class MyView extends View
         }
         //返回true 表示拦截的意思
         return true;
+    }
+
+    @Override
+    public void computeScroll()
+    {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset())
+        {
+            ((View) getParent()).scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+            invalidate();
+        }
     }
 }
