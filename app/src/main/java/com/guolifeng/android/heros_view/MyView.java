@@ -1,8 +1,9 @@
 package com.guolifeng.android.heros_view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -12,6 +13,10 @@ import android.view.View;
 
 public class MyView extends View
 {
+    private static final String TAG = "MyView";
+    private int lastX;
+    private int lastY;
+
     public MyView(Context context)
     {
         super(context);
@@ -28,36 +33,44 @@ public class MyView extends View
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom)
     {
-        setMeasuredDimension(measureWidth(widthMeasureSpec), measureWidth(heightMeasureSpec));
+        Log.i(TAG, "onLayout: ");
+        super.onLayout(changed, left, top, right, bottom);
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
+    public boolean onTouchEvent(MotionEvent event)
     {
-        super.onDraw(canvas);
-    }
-
-    private int measureWidth(int measureSpec)
-    {
-        int reasult = 0;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-        if (specMode == MeasureSpec.EXACTLY)
+        Log.i(TAG, "onTouchEvent: ");
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        switch (event.getAction())
         {
-            reasult = specSize;
-        } else
-        {
-            reasult = 200;
-            if (specMode == MeasureSpec.AT_MOST)
-            {
-                reasult = Math.min(specSize, reasult);
-            }
+            case MotionEvent.ACTION_UP:
+                Log.i(TAG, "onTouchEvent: ACTION_UP");
+                break;
+            case MotionEvent.ACTION_DOWN:
+                Log.i(TAG, "onTouchEvent: ACTION_DOWN");
+                lastX = x;
+                lastY = y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.i(TAG, "onTouchEvent: ACTION_MOVE");
+                int offsetX = x - lastX;
+                int offsetY = y - lastY;
+                //方法:3
+                ((View) getParent()).scrollBy(-offsetX, -offsetY);
+                //方法：2
+//                offsetLeftAndRight(offsetX);
+//                offsetTopAndBottom(offsetY);
+                //方法：1
+//                layout(getLeft() + offsetX, getTop() + offsetY, getRight() + offsetX, getBottom() + offsetY);
+                break;
+            default:
+                break;
         }
-        return reasult;
-
+        //返回true 表示拦截的意思
+        return true;
     }
-
-
 }

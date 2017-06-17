@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.guolifeng.android.heros_view.MainActivity">
 
-    <com.guolifeng.android.heros_view.MyTextView
+    <com.guolifeng.android.heros_view.MyView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:text="@android:string/selectTextMode"
+        android:background="@color/colorPrimary"
         />
 
 </LinearLayout>
